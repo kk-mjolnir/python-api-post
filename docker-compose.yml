@@ -1,0 +1,30 @@
+version: "2.4"
+
+services:
+  backend:
+    image: fastapi-mqtt:1.0.0
+    container_name: fastapi-mqtt-backend
+
+    mem_limit: 300mb
+
+    volumes:
+      - './publish/:/publish/'
+      - './cfg-data/:/cfg-data/'
+
+    environment:
+      MQTT_BROKER: "192.168.0.32"
+      MQTT_PORT: "1883"
+      MQTT_TOPIC: "factory/process/status"
+
+    ports:
+      - '8000:8000'
+
+    networks:
+      - proxy-redirect
+
+    restart: always
+
+networks:
+  proxy-redirect:
+    external:
+      name: proxy-redirect
